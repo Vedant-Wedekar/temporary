@@ -1,270 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title> Vedant & Team</title>
-
-  <!-- GSAP -->
-  <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
-  <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8">
+  <title>Affirmation Bubbles 🌸</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      font-family: 'Outfit', sans-serif;
-      background-color: #fefaf6;
-      color: #1f1f1f;
-      overflow-x: hidden;
-      scroll-behavior: smooth;
-      cursor: none;
+    * {
+      box-sizing: border-box;
     }
 
-    /* .cursor {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 20px;
-      height: 20px;
-      background-color: #ffb6c1;
-      border-radius: 50%;
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      transition: transform 0.1s ease;
-      z-index: 9999;
-    } */
-    :root {
-      --bg-light: #fff8f3;
-      --pink: #ffb3c6;
-      --mint: #c9f0ff;
-      --lavender: #e0bbff;
-      --peach: #ffe0ac;
-      --text-dark: #333;
+    body {
+      margin: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: url('https://www.transparenttextures.com/patterns/paper-fibers.png') repeat, #f5f7fa;
+      overflow-x: hidden;
     }
-    .cursor {
-      width: 20px;
-      height: 20px;
-      border: 2px solid var(--pink);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      z-index: 9999;
-      transition: transform 0.1s ease-out;
-    }   
+
     header {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      padding: 20px 50px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(255,255,255,0.8);
-      backdrop-filter: blur(10px);
-      z-index: 1000;
-      border-bottom: 1px solid rgba(0,0,0,0.1);
+      padding: 15px 20px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(6px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
     }
 
-    .logo {
-      font-size: 1.8em;
-      font-weight: 800;
-      letter-spacing: 2px;
-      color: #e29578;
+    header h1 {
+      font-size: 1.4rem;
+      color: #37474f;
     }
 
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 30px;
+    #clock {
+      font-size: 1.1rem;
+      color: #455a64;
     }
 
-    nav li {
+    .btn {
+      display: block;
+      margin: 25px auto;
+      padding: 12px 24px;
+      background: #ffffffdd;
+      border: 2px solid #90a4ae;
+      color: #263238;
+      border-radius: 30px;
+      font-weight: bold;
       cursor: pointer;
-      position: relative;
-      font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
 
-    nav li::after {
-      content: '';
-      height: 2px;
-      width: 0;
-      background: linear-gradient(90deg, #f4a261, #e76f51);
+    .btn:hover {
+      background-color: #cfd8dc;
+    }
+
+    .bubble {
       position: absolute;
-      bottom: -4px;
-      left: 0;
-      transition: width 0.3s ease;
-    }
-
-    nav li:hover::after {
-      width: 100%;
-    }
-
-    section {
-      padding: 140px 20px;
+      padding: 14px 20px;
+      border-radius: 25px;
+      background-color: rgba(255, 255, 255, 0.85);
+      color: #37474f;
+      font-size: 14px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      cursor: pointer;
+      user-select: none;
       text-align: center;
     }
 
-    .hero h1 {
-      font-size: 3em;
-      font-weight: 800;
-      background: linear-gradient(90deg, #ffb6c1, #ffdac1);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .gallery {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-top: 40px;
-    }
-
-    .gallery-box {
-      width: 300px;
-      height: 200px;
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: 600;
-      color: #555;
-    }
-
-    form {
-      max-width: 500px;
-      margin: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    input, textarea {
-      padding: 15px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      font-size: 1em;
-    }
-
-    button {
-      padding: 15px;
-      background: #e29578;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    
-#gallery1 {
-    border-radius: 50%;
-}
     footer {
       text-align: center;
-      padding: 40px 20px;
-      font-size: 0.9em;
-      color: #999;
-    }
-    .hero h1 {
-      font-size: 3.8em;
-      font-weight: 800;
-      background: linear-gradient(90deg, var(--pink), var(--mint));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: glowText 5s ease-in-out infinite alternate;
-    }
-    @keyframes float {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-30px) translateX(15px); }
-      100% { transform: translateY(0); }
+      font-size: 0.9rem;
+      color: #607d8b;
+      padding: 20px 10px;
+      background-color: #f0f0f0;
+      margin-top: 60px;
+      border-top: 1px solid #ccc;
     }
 
-    @keyframes glowText {
-      0% { filter: drop-shadow(0 0 5px var(--pink)); }
-      100% { filter: drop-shadow(0 0 10px var(--mint)); }
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.1rem;
+      }
+
+      #clock {
+        font-size: 1rem;
+      }
+
+      .btn {
+        width: 80%;
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="cursor" id="cursor"></div>
 
-  <header>
-    <div class="logo">V & Team</div>
-    <nav>
-      <ul>
-        <li>Home</li>
-        <li>Gallery</li>
-        <li>Contact</li>
-      </ul>
-    </nav>
-  </header>
+<header>
+  <h1>🌸 Affirmation Bubbles</h1>
+  <div id="clock">--:--:--</div>
+</header>
 
-  <section class="hero">
-    <h1>Animating U with Code</h1>
-    <p>Every scroll. Every hover. Every wow.</p>
-    <div class=" ">Remainber refresh again and again</div>
-  </section>
+<button class="btn" onclick="app.generateBubble()">Generate Bubble</button>
 
-  <section style="margin-bottom: 100px;">
-    <h2>Animation Gallery</h2>
-    <div class="gallery">
-      <div class="gallery-box" id="gallery1"><img width="300px" border-radius="50%" src="105.png"></div>
-      <div class="gallery-box" id="gallery2"><img width="300px" border-radius="50%" src="gk.png"></div>
-      <div class="gallery-box" id="gallery3"><img width="300px" border-radius="50%" src="103.png"></div>
-    </div>
-  </section>
+<!-- Background Music -->
+<audio id="lofi" src="jazz-lounge-elevator-music-322314.mp3" autoplay loop></audio>
 
-  <section>
-    <h2>Do not Contact Me , Just call if u like my practice</h2>
-    <form id="contactForm">
-      <input type="text" placeholder="Your Name" required>
-      <input type="email" placeholder="Your Email" required>
-      <textarea rows="4" placeholder="Your Message" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
-    <p id="thankYou" style="display:none; margin-top:20px; font-weight:bold; color:#2a9d8f;">Thank you! I'll reach out soon ✨</p>
-  </section>
+<!-- Pop Sound -->
+<audio id="popSound" src="jazz-lounge-elevator-music-322314.mp3"></audio>
 
-  <footer>
-    &copy; 2025 | Made with 💖 by Vedant 
-  </footer>
+<footer>
+  💻 JavaScript Assignment made with <strong>HTML, CSS, JS, GSAP</strong> & lots of ☕ + 💖 <br>
+  — Crafted thoughtfully by Vedant 🌿
+</footer>
 
-  <script>
-    const cursor = document.getElementById('cursor');
-    document.addEventListener('mousemove', e => {
-      cursor.style.top = `${e.clientY}px`;
-      cursor.style.left = `${e.clientX}px`;
-    });
+<script>
+  const affirmations = [
+    "You're doing amazing 💫",
+    "Breathe. Smile. Repeat 😊",
+    "Progress, not perfection 🌿",
+    "Your energy is magic ✨",
+    "You matter. Always 💖",
+    "Keep going 🌈",
+    "Your light shines bright 🌞",
+    "One step at a time 🐾",
+    "You're growing beautifully 🌼",
+    "Everything will be okay 🌸",
+    "You're not late. Everyone else is just early. ⏰",
+    "You're so unique… just like everyone else. 🌍"
 
-    gsap.registerPlugin(ScrollTrigger);
 
-    gsap.from(".hero h1", { y: -50, opacity: 0, duration: 1, delay: 0.2 });
-    gsap.from(".hero p", { y: 50, opacity: 0, duration: 1, delay: 0.4 });
+  ];
 
-    gsap.from("#gallery1", { scrollTrigger: "#gallery1", x: -200, opacity: 0, duration: 1 });
-    gsap.from("#gallery2", { scrollTrigger: "#gallery2", scale: 0.5, opacity: 0, duration: 1 });
-    gsap.from("#gallery3", { scrollTrigger: "#gallery3", rotation: 180, opacity: 0, duration: 1 });
+  const app = {
+    generateBubble() {
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = affirmations[Math.floor(Math.random() * affirmations.length)];
 
-    gsap.from("form input, form textarea, form button", {
-      scrollTrigger: "form",
-      y: 100,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.2
-    });
+      const x = Math.random() * (window.innerWidth - 150);
+      const y = window.innerHeight;
 
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      document.getElementById('contactForm').style.display = 'none';
-      document.getElementById('thankYou').style.display = 'block';
-      gsap.from("#thankYou", { scale: 0.5, opacity: 0, duration: 1 });
-    });
-  </script>
+      bubble.style.left = `${x}px`;
+      bubble.style.top = `${y}px`;
+
+      // Add click to pop
+      bubble.addEventListener('click', () => {
+        document.getElementById("popSound").play();
+        gsap.to(bubble, {
+          scale: 0,
+          opacity: 0,
+          duration: 0.4,
+          onComplete: () => bubble.remove()
+        });
+      });
+
+      document.body.appendChild(bubble);
+
+      gsap.to(bubble, {
+        y: -window.innerHeight - 100,
+        duration: 8,
+        ease: "power1.inOut",
+        onComplete: () => bubble.remove()
+      });
+    },
+
+    autoGenerate() {
+      setInterval(() => {
+        this.generateBubble();
+      }, 4000);
+    }
+  };
+
+  // Clock
+  function updateClock() {
+    const now = new Date();
+    const time = now.toLocaleTimeString();
+    document.getElementById("clock").textContent = time;
+  }
+
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  app.autoGenerate();
+</script>
+
 </body>
 </html>
