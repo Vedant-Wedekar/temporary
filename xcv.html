@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Affirmation Bubbles 🌸</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: url('https://www.transparenttextures.com/patterns/paper-fibers.png') repeat, #f5f7fa;
+      overflow-x: hidden;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(6px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      color: #37474f;
+    }
+
+    #clock {
+      font-size: 1.1rem;
+      color: #455a64;
+    }
+
+    .btn {
+      display: block;
+      margin: 25px auto;
+      padding: 12px 24px;
+      background: #ffffffdd;
+      border: 2px solid #90a4ae;
+      color: #263238;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .btn:hover {
+      background-color: #cfd8dc;
+    }
+
+    .bubble {
+      position: absolute;
+      padding: 14px 20px;
+      border-radius: 25px;
+      background-color: rgba(255, 255, 255, 0.85);
+      color: #37474f;
+      font-size: 14px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      cursor: pointer;
+      user-select: none;
+      text-align: center;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #607d8b;
+      padding: 20px 10px;
+      background-color: #f0f0f0;
+      margin-top: 60px;
+      border-top: 1px solid #ccc;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.1rem;
+      }
+
+      #clock {
+        font-size: 1rem;
+      }
+
+      .btn {
+        width: 80%;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🌸 Affirmation Bubbles</h1>
+  <div id="clock">--:--:--</div>
+</header>
+
+<button class="btn" onclick="app.generateBubble()">Generate Bubble</button>
+
+<!-- Background Music -->
+<audio id="lofi" src="jazz-lounge-elevator-music-322314.mp3" autoplay loop></audio>
+
+<!-- Pop Sound -->
+<audio id="popSound" src="jazz-lounge-elevator-music-322314.mp3"></audio>
+
+<footer>
+  💻 JavaScript Assignment made with <strong>HTML, CSS, JS, GSAP</strong> & lots of ☕ + 💖 <br>
+  — Crafted thoughtfully by Vedant 🌿
+</footer>
+
+<script>
+  const affirmations = [
+    "You're doing amazing 💫",
+    "Breathe. Smile. Repeat 😊",
+    "Progress, not perfection 🌿",
+    "Your energy is magic ✨",
+    "You matter. Always 💖",
+    "Keep going 🌈",
+    "Your light shines bright 🌞",
+    "One step at a time 🐾",
+    "You're growing beautifully 🌼",
+    "Everything will be okay 🌸",
+    "You're not late. Everyone else is just early. ⏰",
+    "You're so unique… just like everyone else. 🌍"
+
+
+  ];
+
+  const app = {
+    generateBubble() {
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = affirmations[Math.floor(Math.random() * affirmations.length)];
+
+      const x = Math.random() * (window.innerWidth - 150);
+      const y = window.innerHeight;
+
+      bubble.style.left = `${x}px`;
+      bubble.style.top = `${y}px`;
+
+      // Add click to pop
+      bubble.addEventListener('click', () => {
+        document.getElementById("popSound").play();
+        gsap.to(bubble, {
+          scale: 0,
+          opacity: 0,
+          duration: 0.4,
+          onComplete: () => bubble.remove()
+        });
+      });
+
+      document.body.appendChild(bubble);
+
+      gsap.to(bubble, {
+        y: -window.innerHeight - 100,
+        duration: 8,
+        ease: "power1.inOut",
+        onComplete: () => bubble.remove()
+      });
+    },
+
+    autoGenerate() {
+      setInterval(() => {
+        this.generateBubble();
+      }, 4000);
+    }
+  };
+
+  // Clock
+  function updateClock() {
+    const now = new Date();
+    const time = now.toLocaleTimeString();
+    document.getElementById("clock").textContent = time;
+  }
+
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  app.autoGenerate();
+</script>
+
+</body>
+</html>
